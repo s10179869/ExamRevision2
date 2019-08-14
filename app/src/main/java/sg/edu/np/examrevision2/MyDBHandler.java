@@ -65,7 +65,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_ID, id);
         contentValues.put(COLUMN_NOTE, note);
-        db.update(TABLE_NAME, contentValues, "NoteID = ?", new String[]{id});
+        db.update(TABLE_NAME, contentValues, "NoteID=?", new String[]{String.valueOf(id)});
         return true;
     }
 }
