@@ -59,4 +59,13 @@ public class MyDBHandler extends SQLiteOpenHelper {
         db.close();
         return notes;
     }
+
+    public boolean updateNote(String id, String note){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_ID, id);
+        contentValues.put(COLUMN_NOTE, note);
+        db.update(TABLE_NAME, contentValues, "NoteID = ?", new String[]{id});
+        return true;
+    }
 }

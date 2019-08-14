@@ -13,19 +13,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     MyDBHandler db = new MyDBHandler(this, null, null, 1);
-    EditText editText;
-
+    EditText editText, newNote, id;
+    Button add, update;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button add = findViewById(R.id.clickMeBaby);
-
+        add = findViewById(R.id.clickMeBaby);
+        update = findViewById(R.id.button);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -33,6 +34,14 @@ public class MainActivity extends AppCompatActivity {
                 showNoteDialog();
             }
         });
+
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateNote();
+            }
+        });
+
 
         showAllNotes();
     }
@@ -60,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        db.addNote(editText.getText().toString());
+                        db.updateNote(id.getText().toString(), newNote.getText().toString());
                         showAllNotes();
                     }
                 })
@@ -74,5 +83,25 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .show();
     }
+
+    public void updateNote()
+    {
+        View v = View.inflate(this, R.layout.layout_update, null);
+        id = findViewById(R.id.editText);
+        newNote = findViewById(R.id.editText2);
+
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle("Update Note")
+                .setView(v)
+                .setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        boolean update = db.updateNote(id.getText().toString(), newNote.getText().toString());
+                    }
+                })
+                .show();
+    }
+
 
 }
