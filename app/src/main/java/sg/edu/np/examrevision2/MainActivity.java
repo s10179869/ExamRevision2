@@ -41,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
                 updateNote();
             }
         });
-
-
         showAllNotes();
     }
 
@@ -69,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        db.updateNote(id.getText().toString(), newNote.getText().toString());
+                        db.addNote(editText.getText().toString());
                         showAllNotes();
                     }
                 })
@@ -90,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         id = findViewById(R.id.editText);
         newNote = findViewById(R.id.editText2);
 
+
         new AlertDialog.Builder(MainActivity.this)
                 .setTitle("Update Note")
                 .setView(v)
@@ -97,7 +96,19 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        boolean update = db.updateNote(id.getText().toString(), newNote.getText().toString());
+                        int updatedID = Integer.parseInt(id.getText().toString());
+                        String  updatedNote = newNote.getText().toString();
+                        db.updateNote(updatedID,updatedNote);
+                        showAllNotes();
+                    }
+                })
+                .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Integer deletedRow = db.deleteNote(id.getText().toString());
+                        if (deletedRow > 0){
+                            Toast.makeText(MainActivity.this, "Note deleted!", Toast.LENGTH_LONG).show();
+                        }
                     }
                 })
                 .show();

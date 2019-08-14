@@ -60,12 +60,18 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return notes;
     }
 
-    public boolean updateNote(String id, String note){
+    public boolean updateNote(int id, String note){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_ID, id);
         contentValues.put(COLUMN_NOTE, note);
-        db.update(TABLE_NAME, contentValues, "NoteID=?", new String[]{String.valueOf(id)});
-        return true;
+        long result = db.update(TABLE_NAME, contentValues, COLUMN_ID+"=?", new String[]{String.valueOf(id)});
+        return result != 1;
+    }
+
+    public Integer deleteNote(String id)
+    {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete(TABLE_NAME, "NoteID = ?", new String[]{String.valueOf(id)});
     }
 }
